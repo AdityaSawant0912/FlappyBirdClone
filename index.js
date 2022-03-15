@@ -60,8 +60,8 @@ function draw() {
     walls.show();
     if (walls.x + walls.width < 0) {
       wallsArr.splice(i, 1);
+      score++;
     }
-    if (walls.x + walls.width == bird.x - bird.r) score++;
     if (walls.x == width / 2) {
       wallsArr.push(new Walls());
     }
