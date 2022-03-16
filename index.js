@@ -2,6 +2,8 @@ let bird;
 let groundY;
 let score = 0;
 let wallsArr = [];
+let gSlider;
+let flyPowerSlider;
 
 function setup() {
   createCanvas(500, 700);
@@ -9,6 +11,22 @@ function setup() {
   groundY = height - bird.r * 2;
   bird.checkBoundary();
   wallsArr.push(new Walls());
+  gSlider = createSlider(0.1, 3.0, 0.6, 0.1);
+  gSlider.input(changeG);
+  flyPowerSlider = createSlider(10, 70, 20, 5);
+  flyPowerSlider.input(changeFlyPower);
+}
+
+function changeG(){
+  bird.g = gSlider.value();
+  noLoop();
+  restart();
+}
+
+function changeFlyPower(){
+  bird.changeFlyPower = gSlider.value() * -1;
+  noLoop();
+  restart();
 }
 
 function drawGround() {
@@ -40,11 +58,18 @@ function endGame() {
   noLoop();
 }
 
-function mousePressed() {
-  bird = new Bird();
+function restart(){
+  bird.y = width/2
+  bird.v = 0;
+  
   wallsArr = [];
+  score = 0;
   wallsArr.push(new Walls());
-  loop()
+  loop();
+}
+
+function mousePressed() {
+  restart();
 }
 
 function draw() {
@@ -53,9 +78,8 @@ function draw() {
   if (bird.checkBoundary(groundY)) {
     endGame();
   }
-  showScore();
 
-  for (let i = wallsArr.length-1; i >=0; i--) {
+  for (let i = wallsArr.length - 1; i >= 0; i--) {
     let walls = wallsArr[i];
     walls.show();
     if (walls.x + walls.width < 0) {
@@ -71,7 +95,7 @@ function draw() {
     ) {
       if (
         bird.y - bird.r <= walls.gapY ||
-        bird.y + bird.r >=  walls.gapY + walls.gapH
+        bird.y + bird.r >= walls.gapY + walls.gapH
       ) {
         endGame();
       }
@@ -79,5 +103,6 @@ function draw() {
     walls.update();
   }
   bird.show();
+  showScore();
   bird.update();
 }
