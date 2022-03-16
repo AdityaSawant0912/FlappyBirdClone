@@ -69,7 +69,8 @@ function restart(){
 }
 
 function mousePressed() {
-  restart();
+  //restart();
+  bird.fly()
 }
 
 function draw() {
